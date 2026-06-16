@@ -24,7 +24,7 @@ node_modules/
 # ============================================================
 
 # Pasted image from Figma export (binary asset, not code)
-src/imports/image.png
+# src/imports/image.png
 
 # ============================================================
 # src/styles/ — Redundant/overlapping CSS files

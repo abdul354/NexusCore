@@ -12,7 +12,14 @@ import {
   X
 } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import logoImg from '@/imports/image.png';
+
+// Inline SVG logo — avoids missing file errors when cloning the repo
+const logoImg = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">'
+  + '<rect width="32" height="32" rx="8" fill="#6366f1"/>'
+  + '<path d="M8 16L14 10V14H24V18H14V22L8 16Z" fill="white"/>'
+  + '</svg>'
+)}`;
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
