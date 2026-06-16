@@ -67,8 +67,9 @@ export function CommandPalette({
           <Search className="w-[18px] h-[18px] text-black/40 mr-3 shrink-0" strokeWidth={1.5} />
           <Command.Input 
             placeholder="Type a command or search..."
-            className="w-full py-4 bg-transparent text-[14px] text-black placeholder-black/40 outline-none"
+            className="w-full py-4 bg-transparent text-[14px] text-black placeholder-black/40 border-none outline-none focus:outline-none focus:ring-0 !outline-none"
             autoFocus
+            style={{ outline: 'none' }}
           />
         </div>
 

@@ -1,6 +1,10 @@
 import { motion } from 'motion/react';
-import { Search, Bell, Command, ChevronDown, Menu } from 'lucide-react';
+import { Search, Bell, Command, ChevronDown, Menu, User, Settings, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
+
+import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel } from './ui/dropdown-menu';
+import { useNavigate } from 'react-router';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -8,6 +12,8 @@ interface HeaderProps {
 }
 
 export function Header({ onToggleSidebar, onSearchClick }: HeaderProps) {
+  const navigate = useNavigate();
+
   return (
     <motion.header 
       className="fixed top-0 left-0 md:left-64 right-0 h-16 border-b border-black/10 bg-white/80 backdrop-blur-xl z-40"
@@ -47,18 +53,36 @@ export function Header({ onToggleSidebar, onSearchClick }: HeaderProps) {
           </button>
 
           {/* Notifications */}
-          <motion.button 
-            className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f7f7f7] transition-colors relative"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Bell className="w-[18px] h-[18px] text-black/60" strokeWidth={1.5} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-black rounded-full" />
-          </motion.button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <motion.button 
+                className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f7f7f7] transition-colors relative cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bell className="w-[18px] h-[18px] text-black/60" strokeWidth={1.5} />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-black rounded-full" />
+              </motion.button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-80 p-0 border border-black/10 shadow-xl rounded-xl bg-white overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-black/5 bg-[#f7f7f7]/50">
+                <h3 className="text-[14px] font-[600] text-black">Notifications</h3>
+                <span className="text-[11px] font-[600] text-black/40 bg-black/5 px-2 py-0.5 rounded-md">0 new</span>
+              </div>
+              <div className="p-8 text-center flex flex-col items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mb-4">
+                  <Bell className="w-5 h-5 text-black/40" />
+                </div>
+                <p className="text-[14px] font-[600] text-black mb-1">You're all caught up</p>
+                <p className="text-[13px] font-[500] text-black/50">No new notifications to show right now.</p>
+              </div>
+            </PopoverContent>
+          </Popover>
 
           {/* Command Palette */}
           <motion.button 
-            className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f7f7f7] transition-colors"
+            onClick={onSearchClick}
+            className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f7f7f7] transition-colors cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -66,11 +90,40 @@ export function Header({ onToggleSidebar, onSearchClick }: HeaderProps) {
           </motion.button>
 
           {/* User Profile */}
-          <button className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-[#f7f7f7] transition-colors">
-            <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center">
-              <span className="text-white text-[12px] font-[600]">JD</span>
-            </div>
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-[#f7f7f7] transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-black/20">
+                <div className="w-7 h-7 rounded-full bg-black flex items-center justify-center">
+                  <span className="text-white text-[12px] font-[600]">JD</span>
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-xl border-black/10">
+              <DropdownMenuLabel className="font-normal py-2">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-[14px] font-medium leading-none text-black">John Doe</p>
+                  <p className="text-[12px] leading-none text-black/50">john.doe@nexuscore.ai</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-black/5 my-1" />
+              <DropdownMenuItem className="cursor-pointer text-[13px] py-2 rounded-lg focus:bg-[#f7f7f7]">
+                <User className="mr-2 h-4 w-4 text-black/60" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="cursor-pointer text-[13px] py-2 rounded-lg focus:bg-[#f7f7f7]"
+                onClick={() => navigate('/settings')}
+              >
+                <Settings className="mr-2 h-4 w-4 text-black/60" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-black/5 my-1" />
+              <DropdownMenuItem className="cursor-pointer text-[13px] py-2 rounded-lg focus:bg-[#fcf5f5] text-red-600 focus:text-red-600">
+                <LogOut className="mr-2 h-4 w-4 text-red-600/70" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </motion.header>

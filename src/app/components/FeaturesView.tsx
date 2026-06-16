@@ -118,7 +118,8 @@ export function FeaturesView() {
               placeholder="Search features or repositories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-[#f7f7f7] border border-black/10 rounded-xl text-[14px] font-[500] focus:bg-white transition-all outline-none focus:border-black/30"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#f7f7f7] border border-black/10 rounded-xl text-[14px] font-[500] focus:bg-white transition-all outline-none focus:border-black/30 !outline-none"
+              style={{ outline: 'none' }}
             />
           </div>
 

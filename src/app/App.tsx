@@ -9,7 +9,7 @@ import { FeatureExecution } from './components/FeatureExecution';
 import { GovernanceTimeline } from './components/GovernanceTimeline';
 import { CodeReviewPanel } from './components/CodeReviewPanel';
 import { Sparkles, Bot, Shield, TrendingDown, ArrowRight, Play } from 'lucide-react';
-import { Routes, Route, useLocation } from 'react-router';
+import { Routes, Route, useLocation, useNavigate } from 'react-router';
 import { CommandPalette } from './components/CommandPalette';
 import { LaunchWorkflowDialog } from './components/LaunchWorkflowDialog';
 import { Toaster } from './components/ui/sonner';
@@ -34,9 +34,10 @@ interface DashboardViewProps {
     costSavings: number;
   };
   onLaunchClick: () => void;
+  onViewArchitecture: () => void;
 }
 
-function DashboardView({ metrics, onLaunchClick }: DashboardViewProps) {
+function DashboardView({ metrics, onLaunchClick, onViewArchitecture }: DashboardViewProps) {
   return (
     <div className="w-full p-8">
       {/* Hero Section */}
@@ -62,7 +63,10 @@ function DashboardView({ metrics, onLaunchClick }: DashboardViewProps) {
             <Play className="w-4 h-4" strokeWidth={2} />
             Launch Workflow
           </button>
-          <button className="h-10 px-6 rounded-md border border-gray-200 bg-white text-black text-[14px] font-[600] tracking-tight hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+          <button 
+            onClick={onViewArchitecture}
+            className="h-10 px-6 rounded-md border border-gray-200 bg-white text-black text-[14px] font-[600] tracking-tight hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+          >
             View Architecture
             <ArrowRight className="w-4 h-4" strokeWidth={2} />
           </button>
@@ -167,6 +171,7 @@ function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [launchDialogOpen, setLaunchDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { metrics, launchWorkflow } = useApp();
 
@@ -175,8 +180,7 @@ function MainLayout() {
   };
 
   const handleViewArchitecture = () => {
-    // Navigate using a direct location update or just alert/toast
-    window.location.pathname = '/architecture';
+    navigate('/architecture');
   };
 
   return (
@@ -194,6 +198,7 @@ function MainLayout() {
             <DashboardView 
               metrics={metrics} 
               onLaunchClick={() => setLaunchDialogOpen(true)} 
+              onViewArchitecture={handleViewArchitecture}
             />
           } />
           <Route path="/features" element={<FeaturesView />} />
